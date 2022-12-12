@@ -288,7 +288,12 @@ public extension View {
 	func popupImage(_ image: Image, resizable: Bool = true) -> some View {
 		return preference(key: LNPopupImagePreferenceKey.self, value: resizable ? image.resizable() : image)
 	}
-	
+
+  @available(iOS 15.0, *)
+  func popupImage<Content>(_ image: AsyncImage<Content>) -> some View where Content: View {
+    return preference(key: LNPopupAsyncImagePreferenceKey<Content>.self, value: LNPopupAsyncImageData(image: image))
+  }
+
 	/// Configures the view's popup bar progress.
 	///
 	/// - Parameters:

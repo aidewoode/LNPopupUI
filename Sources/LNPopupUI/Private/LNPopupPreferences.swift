@@ -31,6 +31,15 @@ internal struct LNPopupAnyViewWrapper : Equatable {
 	}
 }
 
+@available(iOS 15.0, *)
+internal struct LNPopupAsyncImageData<Content> : Equatable where Content: View {
+  let image: AsyncImage<Content>
+
+  static func == (lhs: LNPopupAsyncImageData, rhs: LNPopupAsyncImageData) -> Bool {
+    return false
+  }
+}
+
 internal struct LNPopupTitlePreferenceKey: LNPopupNullablePreferenceKey {
 	typealias Value = LNPopupTitleData?
 }
@@ -45,6 +54,11 @@ internal struct LNPopupProgressPreferenceKey: LNPopupNullablePreferenceKey {
 
 internal struct LNPopupImagePreferenceKey: LNPopupNullablePreferenceKey {
 	typealias Value = Image?
+}
+
+internal struct LNPopupAsyncImagePreferenceKey<Content> : LNPopupNullablePreferenceKey where Content: View {
+  @available(iOS 15.0, *)
+  typealias Value = LNPopupAsyncImageData<Content>?
 }
 
 internal struct LNPopupLeadingBarItemsPreferenceKey: LNPopupNullablePreferenceKey {

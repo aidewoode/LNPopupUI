@@ -183,6 +183,14 @@ internal class LNPopupProxyViewController<Content, PopupContent> : UIHostingCont
 						self?.popupViewController?.popupItem.setValue(UIHostingController(rootView: anyView), forKey: "swiftuiImageController")
 					}
 				}
+        .onPreferenceChange(LNPopupAsyncImagePreferenceKey<Content>.self) { [weak self] data in
+          let anyView = AnyView(erasing: data?.image.edgesIgnoringSafeArea(.all))
+          if let imageController = self?.popupViewController?.popupItem.value(forKey: "swiftuiImageController") as? UIHostingController<AnyView> {
+            imageController.rootView = anyView
+          } else {
+            self?.popupViewController?.popupItem.setValue(UIHostingController(rootView: anyView), forKey: "swiftuiImageController")
+          }
+        }
 				.onPreferenceChange(LNPopupProgressPreferenceKey.self) { [weak self] progress in
 					self?.popupViewController?.popupItem.progress = progress ?? 0.0
 				}
@@ -207,7 +215,8 @@ internal class LNPopupProxyViewController<Content, PopupContent> : UIHostingCont
 					}
 				}
 		}()
-		
+
+
 		return {
 			if let popupViewController = self.cast(value: self.popupViewController, to: view.self) {
 				popupViewController.rootView = view
